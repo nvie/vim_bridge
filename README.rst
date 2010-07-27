@@ -26,7 +26,7 @@ be transparent::
     python << endpython
     from vim_bridge import bridged
 
-    @bridged('first', 'last')
+    @bridged
     def SayHello(first, last):
         return "Hello, %s %s!" % (first, last)
 
@@ -54,7 +54,7 @@ Passing in a list::
     python << endpython
     from vim_bridge import bridged
 
-    @bridged('list')
+    @bridged
     def GetLongest(list):
         return max(map(lambda s: len(s), list))
 
@@ -69,7 +69,7 @@ Catching exceptions::
     python << endpython
     from vim_bridge import bridged
 
-    @bridged()
+    @bridged
     def WillCauseException():
         raise Exception("Oops")
 
@@ -95,7 +95,7 @@ pure Vim scripting::
     import os.path
     from vim_bridge import bridged
 
-    @bridged('path')
+    @bridged
     def NormalizePath(path):
         return os.path.realpath(path)
     END
