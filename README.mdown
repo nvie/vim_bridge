@@ -12,6 +12,7 @@ be transparent:
 
     python << endpython
     from vim_bridge import bridged
+    from vim_bridge import func_register
 
     @bridged('first', 'last')
     def SayHello(first, last):
@@ -20,7 +21,8 @@ be transparent:
     endpython
 
     " Now call directly into the Python function!
-    echo SayHello("John", "Doe")     " prints "Hello, John Doe!"
+    echo SayHello("John", "Doe")
+               " prints "Hello, John Doe!"
 
 
 Supported
@@ -39,6 +41,7 @@ Passing in a list:
 
     python << endpython
     from vim_bridge import bridged
+    from vim_bridge import func_register
 
     @bridged('list')
     def GetLongest(list):
@@ -46,13 +49,15 @@ Passing in a list:
 
     endpython
 
-    echo GetLongest(['one', 'two', 'three', 'four', 'five'])  " returns "three"
+    echo GetLongest(['one', 'two', 'three', 'four', 'five'])
+                " returns "three"
 
 
 Catching exceptions:
 
     python << endpython
     from vim_bridge import bridged
+    from vim_bridge import func_register
 
     @bridged()
     def WillCauseException():
@@ -60,11 +65,12 @@ Catching exceptions:
 
     endpython
 
-    echo WillCauseException()       " will throw an error to the user
+    " This will throw an error to the user...
+    echo WillCauseException()
 
-    " but... here's how you deal with it in Vim
+    " But here's how you can catch that in Vim
     try
-        echo WillCauseException()       " will throw an error to the user
+        echo WillCauseException()
     catch
         echo "Something went wrong. Aborting."
     finally
