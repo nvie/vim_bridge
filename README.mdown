@@ -74,3 +74,18 @@ Catching exceptions:
         echo "Cleaning up."
     endtry
 
+
+Using Python stdlib functions to do work that would be more difficult using pure Vim scripting:
+
+    python << END
+    import os.path
+    from vim_bridge import bridged
+
+    @bridged('path')
+    def NormalizePath(path):
+        return os.path.realpath(path)
+    END
+
+    echo NormalizePath("/this/../or/./.././that/is/./a/.//very/../obscure/..//././long/./../path/name")
+    echo NormalizePath("..")
+
