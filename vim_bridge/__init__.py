@@ -3,7 +3,7 @@ from vim_bridge.registry import func_register
 
 __all__ = ['bridged', '__version__']
 
-VERSION = (0, 2)
+VERSION = (0, 3)
 __version__ = ".".join(map(str, VERSION[0:2]))
 
 def _get_arguments(func):
