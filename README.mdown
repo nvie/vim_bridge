@@ -12,7 +12,6 @@ be transparent:
 
     python << endpython
     from vim_bridge import bridged
-    from vim_bridge import func_register
 
     @bridged('first', 'last')
     def SayHello(first, last):
@@ -41,7 +40,6 @@ Passing in a list:
 
     python << endpython
     from vim_bridge import bridged
-    from vim_bridge import func_register
 
     @bridged('list')
     def GetLongest(list):
@@ -57,7 +55,6 @@ Catching exceptions:
 
     python << endpython
     from vim_bridge import bridged
-    from vim_bridge import func_register
 
     @bridged()
     def WillCauseException():

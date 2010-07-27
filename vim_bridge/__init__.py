@@ -1,4 +1,4 @@
-func_register = {}
+from vim_bridge.registry import func_register
 
 class bridged(object):
 
@@ -13,6 +13,7 @@ class bridged(object):
         lines.append('python << endp')
         for arg in self.args:
             lines.append('__%s = vim.eval("a:%s")' % (arg, arg))
+        lines.append('from vim_bridge.registry import func_register')
         lines.append('__result = func_register["%s"](%s)' % (fin.func_name, ", ".join(map(lambda s: "__%s" % s, self.args))))
         lines.append('vim.command("return %s" % repr(__result))')
         lines.append('endp')
