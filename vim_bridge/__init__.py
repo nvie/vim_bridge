@@ -9,11 +9,14 @@ def bridged(fin):
     lines = ['function %s(%s)' % (fin.func_name, ", ".join(func_args))]
     lines.append('python << endp')
     for arg in func_args:
-        lines.append('__%s = vim.eval("a:%s")' % (arg, arg))
+        lines.append('__vim_bridge_%s = vim.eval("a:%s")' % (arg, arg))
     lines.append('from vim_bridge.registry import func_register')
-    lines.append('__result = func_register["%s"](%s)' % (fin.func_name, \
-            ", ".join(map(lambda s: "__%s" % s, func_args))))
-    lines.append('vim.command("return %s" % repr(__result))')
+    lines.append('__vim_bridge_result = func_register["%s"](%s)' % (fin.func_name, \
+            ", ".join(map(lambda s: "__vim_bridge_%s" % s, func_args))))
+    lines.append('vim.command("return %s" % repr(__vim_bridge_result))')
+    for arg in func_args:
+        lines.append('del __vim_bridge_%s' % arg)
+    lines.append('del __vim_bridge_result')
     lines.append('endp')
     lines.append('endf')
     vim.command("\n".join(lines))
