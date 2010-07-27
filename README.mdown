@@ -49,8 +49,8 @@ Passing in a list:
 
     endpython
 
-    echo GetLongest(['one', 'two', 'three', 'four', 'five'])
-                " returns "three"
+    echo GetLongest(['one', 'two', 'three', 'four'])
+                " returns 5 (because "three" is 5 chars long)
 
 
 Catching exceptions:
