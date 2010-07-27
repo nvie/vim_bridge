@@ -1,4 +1,3 @@
-import vim
 from vim_bridge.registry import func_register
 
 __all__ = ['bridged', '__version__']
@@ -10,6 +9,7 @@ def _get_arguments(func):
     return func.func_code.co_varnames[:func.func_code.co_argcount]
 
 def bridged(fin):
+    import vim
     func_register[fin.func_name] = fin
 
     func_args = _get_arguments(fin)
