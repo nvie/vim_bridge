@@ -1,14 +1,19 @@
+import vim
 from vim_bridge.registry import func_register
+
+__all__ = ['bridged', '__version__']
 
 VERSION = (0, 2)
 __version__ = ".".join(map(str, VERSION[0:2]))
 
+def _get_arguments(func):
+    return func.func_code.co_varnames[:func.func_code.co_argcount]
+
 def bridged(fin):
     func_register[fin.func_name] = fin
 
-    func_args = fin.func_code.co_varnames
+    func_args = _get_arguments(fin)
 
-    import vim
     lines = ['fun! %s(%s)' % (fin.func_name, ", ".join(func_args))]
     lines.append('python << endp')
     for arg in func_args:
