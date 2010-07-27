@@ -1,5 +1,8 @@
 from vim_bridge.registry import func_register
 
+VERSION = (0, 2)
+__version__ = ".".join(map(str, VERSION[0:2]))
+
 def bridged(fin):
     func_register[fin.func_name] = fin
 

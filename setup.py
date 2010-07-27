@@ -13,9 +13,11 @@ if os.path.exists("README.rst"):
 else:
     long_description = "See http://github.com/nvie/vim_bridge/tree/master"
 
+from vim_bridge import __version__ as version
+
 setup(
     name="vim_bridge",
-    version=0.2,
+    version=version,
     description="A Python-to-Vim bridge decorator that allows transparent calls to Python functions in native Vim scripts.",
     author="Vincent Driessen",
     author_email="vincent@datafox.nl",
