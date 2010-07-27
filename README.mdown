@@ -1,0 +1,73 @@
+Installation
+------------
+Simply install the [vim_py_bridge](http://pypi.python.org/pypi/vim_py_bridge/)
+Python package, using setuptools, `easy_install`, or `pip`.
+
+
+Usage
+-----
+In a Vim script, decorate your Python functions as follows to expose them as
+native Vim callables.  Both arguments and return values are casted so it should
+be transparent:
+
+    python << endpython
+    from vim_bridge import bridged
+
+    @bridged('first', 'last')
+    def SayHello(first, last):
+        return "Hello, %s %s!" % (first, last)
+
+    endpython
+
+    " Now call directly into the Python function!
+    echo SayHello("John", "Doe")     " prints "Hello, John Doe!"
+
+
+Supported
+---------
+The following data types have proven to work:
+
+* Strings
+* Integers
+* Lists
+* Exceptions
+
+
+More examples
+-------------
+Passing in a list:
+
+    python << endpython
+    from vim_bridge import bridged
+
+    @bridged('list')
+    def GetLongest(list):
+        return max(map(lambda s: len(s), list))
+
+    endpython
+
+    echo GetLongest(['one', 'two', 'three', 'four', 'five'])  " returns "three"
+
+
+Catching exceptions:
+
+    python << endpython
+    from vim_bridge import bridged
+
+    @bridged()
+    def WillCauseException():
+        raise Exception("Oops")
+
+    endpython
+
+    echo WillCauseException()       " will throw an error to the user
+
+    " but... here's how you deal with it in Vim
+    try
+        echo WillCauseException()       " will throw an error to the user
+    catch
+        echo "Something went wrong. Aborting."
+    finally
+        echo "Cleaning up."
+    endtry
+
