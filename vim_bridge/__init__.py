@@ -2,7 +2,7 @@ from vim_bridge.registry import func_register
 
 __all__ = ['bridged', '__version__']
 
-VERSION = (0, 3)
+VERSION = (0, 4)
 __version__ = ".".join(map(str, VERSION[0:2]))
 
 def _convert_function_name(fname):
