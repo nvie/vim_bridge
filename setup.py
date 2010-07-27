@@ -8,8 +8,8 @@ except ImportError:
     use_setuptools()
     from setuptools import setup, find_packages
 
-if os.path.exists("README.mdown"):
-    long_description = codecs.open('README.mdown', "r", "utf-8").read()
+if os.path.exists("README.rst"):
+    long_description = codecs.open('README.rst', "r", "utf-8").read()
 else:
     long_description = "See http://github.com/nvie/vim_bridge/tree/master"
 
