@@ -15,7 +15,7 @@ else:
 
 setup(
     name="vim_bridge",
-    version=0.1,
+    version=0.2,
     description="A Python-to-Vim bridge decorator that allows transparent calls to Python functions in native Vim scripts.",
     author="Vincent Driessen",
     author_email="vincent@datafox.nl",
