@@ -1,6 +1,6 @@
 Installation
 ------------
-Simply install the [vim_py_bridge](http://pypi.python.org/pypi/vim_py_bridge/)
+Simply install the [vim_bridge](http://pypi.python.org/pypi/vim_bridge/)
 Python package, using setuptools, `easy_install`, or `pip`.
 
 
