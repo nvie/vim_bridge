@@ -6,7 +6,7 @@ def bridged(fin):
     func_args = fin.func_code.co_varnames
 
     import vim
-    lines = ['function %s(%s)' % (fin.func_name, ", ".join(func_args))]
+    lines = ['fun! %s(%s)' % (fin.func_name, ", ".join(func_args))]
     lines.append('python << endp')
     for arg in func_args:
         lines.append('__vim_bridge_%s = vim.eval("a:%s")' % (arg, arg))
