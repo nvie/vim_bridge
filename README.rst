@@ -103,3 +103,62 @@ pure Vim scripting::
     echo NormalizePath("/this/../or/./.././that/is/./a/.//very/../obscure/..//././long/./../path/name")
     echo NormalizePath("..")
 
+
+You can use the bridged function definitions within a Python block itself, or
+from inside Vim, it does not matter.  In this example, NormalizePath is called
+from both Python and Vim::
+
+    python << END
+    import os.path
+    from vim_bridge import bridged
+
+    @bridged
+    def NormalizePath(path):
+        return os.path.realpath(path)
+
+    @bridged
+    def RealPath(path):
+        # It does not matter if you call NormalizePath from here...
+        return NormalizePath(path)
+    END
+
+    " ...or from here
+    echo NormalizePath("/this/../or/./.././that/is/./a/.//very/../obscure/..//././long/./../path/name")
+    echo RealPath("..")
+
+
+Since vim_bridge 0.4, the function name casing convention is automatically
+converted to match Vim's conventions (and *requirement* even, since function
+names **must** start with a capital letter).  Besides casing, prefixing the
+Python function with an underscore will lead to the function being defined in
+the Vim context as a ``<SID>``-prefixed function (i.e. a "private" function
+that cannot be called from outside the script)::
+
+    python << eop
+    import os
+    import vim
+    from vim_bridge import bridged
+
+    @bridged
+    def public():
+        return "I am public."
+
+    @bridged
+    def _private():
+        return "I am private (available in the current script only)."
+
+    @bridged
+    def my_name_is_auto_converted():
+        return "In Python, I'm called my_name_is_auto_converted, " + \
+               "but in Vim, I'm called MyNameIsAutoConverted :)"
+
+    @bridged
+    def _long_private_name():
+        return "I'm private, and my case is converted automatically."
+    eop
+
+    echo Public()
+    echo s:Private()
+    echo MyNameIsAutoConverted()
+    echo s:LongPrivateName()
+
