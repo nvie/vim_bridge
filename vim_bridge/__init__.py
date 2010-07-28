@@ -16,7 +16,10 @@ def _get_arguments(func):
     return func.func_code.co_varnames[:func.func_code.co_argcount]
 
 def _cast_to_vimsafe_result(value):
-    if type(value) == bool:
+    if value is None:
+        # The string 'None' means nothing in Vim
+        return ''
+    elif type(value) == bool:
         return str(int(value))
     else:
         # Default fallback is the Python representation as a string
