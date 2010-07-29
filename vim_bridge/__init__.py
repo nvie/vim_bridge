@@ -5,11 +5,17 @@ __all__ = ['bridged', '_cast_to_vimsafe_result', '__version__']
 VERSION = (0, 5)
 __version__ = ".".join(map(str, VERSION[0:2]))
 
+def _upcase_first(s):
+    if len(s) == 0:
+        return s
+    else:
+        return s[0].upper() + s[1:]
+
 def _convert_function_name(fname):
     private = fname.startswith('_')
     if private:
         fname = fname[1:]
-    fname = "".join([part.capitalize() for part in fname.split('_')])
+    fname = "".join([_upcase_first(part) for part in fname.split('_')])
     return (private, fname)
 
 def _get_arguments(func):
