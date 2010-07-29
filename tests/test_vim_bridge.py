@@ -3,6 +3,7 @@ import unittest
 # Fake the system path to direct "import vim" calls to our mock module
 import sys
 sys.path = ['tests/mocks'] + sys.path
+
 from vim_bridge import bridged
 
 
