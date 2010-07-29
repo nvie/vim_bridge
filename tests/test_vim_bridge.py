@@ -4,6 +4,10 @@ import unittest
 import sys
 sys.path = ['tests/mocks'] + sys.path
 
+# Stub out the random function
+import vim_bridge
+vim_bridge._rand = lambda: 3
+
 from vim_bridge import bridged
 
 

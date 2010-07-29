@@ -6,6 +6,12 @@ VERSION = (0, 5)
 __version__ = ".".join(map(str, VERSION[0:2]))
 
 
+def _rand():
+    import random
+    random.seed()
+    return random.randint(1000, 9999)
+
+
 def _upcase_first(s):
     if len(s) == 0:
         return s
@@ -47,9 +53,7 @@ def bridged(fin):
     private, vimname = _convert_function_name(fin.func_name)
     private = private and "s:" or ""
 
-    import random
-    random.seed()
-    prefix = '__vim_brdg_%d_' % random.randint(1000, 9999)
+    prefix = '__vim_brdg_%d_' % _rand()
 
     lines = ['fun! %s%s(%s)' % (private, vimname, ", ".join(func_args))]
     lines.append('python << endp')
