@@ -41,18 +41,25 @@ def bridged(fin):
 
     private, vimname = _convert_function_name(fin.func_name)
     private = private and "s:" or ""
+
+    import random
+    random.seed()
+    prefix = '__vim_brdg_%d_' % random.randint(1000, 9999)
+
     lines = ['fun! %s%s(%s)' % (private, vimname, ", ".join(func_args))]
     lines.append('python << endp')
     for arg in func_args:
-        lines.append('__vim_bridge_%s = vim.eval("a:%s")' % (arg, arg))
+        lines.append('%s%s = vim.eval("a:%s")' % (prefix, arg, arg))
     lines.append('from vim_bridge.registry import func_register as fr')
     lines.append('from vim_bridge import _cast_to_vimsafe_result as c2v')
-    lines.append('__vim_bridge_result = c2v(fr["%s"](%s))' % (fin.func_name, \
-            ", ".join(map(lambda s: "__vim_bridge_%s" % s, func_args))))
-    lines.append('vim.command("return %s" % repr(__vim_bridge_result))')
+    lines.append('%sresult = c2v(fr["%s"](%s))' % (prefix, fin.func_name, \
+            ", ".join([prefix + s for s in func_args])))
+    lines.append('vim.command("return %%s" %% repr(%sresult))' % prefix)
     for arg in func_args:
-        lines.append('del __vim_bridge_%s' % arg)
-    lines.append('del __vim_bridge_result')
+        #lines.append('try:')
+        lines.append('del %s%s' % (prefix, arg))
+        #lines.append('except NameError: pass')
+    lines.append('del %sresult' % prefix)
     lines.append('endp')
     lines.append('endf')
     vim.command("\n".join(lines))
