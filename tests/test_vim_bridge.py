@@ -47,17 +47,48 @@ class TestHelperFunctions(unittest.TestCase):
 
 class TestBridgedDecorator(unittest.TestCase):
 
+    def _strip_whitespace(self, x):
+        lines = x.split("\n")
+        lines = [line.strip() for line in lines]
+        x = "\n".join(filter(lambda s: s, lines))
+        return x
+
+    def assertCodeEquals(self, x, y):
+        self.assertEquals(self._strip_whitespace(x), self._strip_whitespace(y))
+
     def test_no_bridges_yet(self):
         from vim_bridge.registry import func_register
         self.assertEquals(func_register, {})
 
     def test_simple_bridge(self):
         from vim_bridge.registry import func_register
+        import vim
 
         self.assertFalse(func_register.has_key('foo'))
+        self.assertFalse(vim.command.called)
 
         @bridged
         def foo(x,y): pass
 
         self.assertTrue(func_register.has_key('foo'))
+        self.assertTrue(vim.command.called)
+        self.assertCodeEquals(vim.command.call_args[0][0], \
+           """
+           fun! Foo(x, y)
+           python << endp
+           __vim_brdg_3_x = vim.eval("a:x")
+           __vim_brdg_3_y = vim.eval("a:y")
+
+           from vim_bridge.registry import func_register as fr
+           from vim_bridge import _cast_to_vimsafe_result as c2v
+
+           __vim_brdg_3_result = c2v(fr["foo"](__vim_brdg_3_x, __vim_brdg_3_y))
+           vim.command("return %s" % repr(__vim_brdg_3_result))
+
+           del __vim_brdg_3_x
+           del __vim_brdg_3_y
+           del __vim_brdg_3_result
+           endp
+           endf
+           """)
 
