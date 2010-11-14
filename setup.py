@@ -26,6 +26,8 @@ setup(
     license="BSD",
     packages=find_packages(),
     install_requires=[],
+    tests_require=['nose'],
+    test_suite="nose.collector",
     zip_safe=False,
     classifiers=[
         # Picked from
