@@ -2,7 +2,7 @@
  vim_bridge - a Python-to-Vim bridge
 =====================================
 
-.. image:: http://stillmaintained.com/nvie/gitflow.png
+.. image:: http://stillmaintained.com/nvie/vim_bridge.png
 
 What is it?
 -----------
