@@ -28,7 +28,7 @@ def _convert_function_name(fname):
 
 
 def _get_arguments(func):
-    return func.func_code.co_varnames[:func.func_code.co_argcount]
+    return func.__code__.co_varnames[:func.__code__.co_argcount]
 
 
 def _cast_to_vimsafe_result(value):
@@ -46,11 +46,11 @@ def _cast_to_vimsafe_result(value):
 
 def bridged(fin):
     import vim
-    func_register[fin.func_name] = fin
+    func_register[fin.__name__] = fin
 
     func_args = _get_arguments(fin)
 
-    private, vimname = _convert_function_name(fin.func_name)
+    private, vimname = _convert_function_name(fin.__name__)
     private = private and "s:" or ""
 
     prefix = '__vim_brdg_%d_' % _rand()
@@ -61,7 +61,7 @@ def bridged(fin):
         lines.append('%s%s = vim.eval("a:%s")' % (prefix, arg, arg))
     lines.append('from vim_bridge.registry import func_register as fr')
     lines.append('from vim_bridge import _cast_to_vimsafe_result as c2v')
-    lines.append('%sresult = c2v(fr["%s"](%s))' % (prefix, fin.func_name, \
+    lines.append('%sresult = c2v(fr["%s"](%s))' % (prefix, fin.__name__,
             ", ".join([prefix + s for s in func_args])))
     lines.append('vim.command("return %%s" %% repr(%sresult))' % prefix)
     for arg in func_args:
