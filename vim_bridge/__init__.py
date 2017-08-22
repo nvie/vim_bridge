@@ -56,7 +56,16 @@ def bridged(fin):
     prefix = '__vim_brdg_%d_' % _rand()
 
     lines = ['fun! %s%s(%s)' % (private, vimname, ", ".join(func_args))]
-    lines.append('python << endp')
+    lines += """\
+if has('python')
+    command! -nargs=1 Python python <args>
+elseif has('python3')
+    command! -nargs=1 Python python3 <args>
+else
+    echo "Error: Requires Vim compiled with +python or +python3"
+    finish
+endif
+Python << endp""".splitlines()
     for arg in func_args:
         lines.append('%s%s = vim.eval("a:%s")' % (prefix, arg, arg))
     lines.append('from vim_bridge.registry import func_register as fr')
