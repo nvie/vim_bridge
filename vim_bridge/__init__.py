@@ -1,3 +1,5 @@
+import sys
+
 from vim_bridge.registry import func_register
 
 __all__ = ['bridged', '_cast_to_vimsafe_result', '__version__']
@@ -56,16 +58,9 @@ def bridged(fin):
     prefix = '__vim_brdg_%d_' % _rand()
 
     lines = ['fun! %s%s(%s)' % (private, vimname, ", ".join(func_args))]
-    lines += """\
-if has('python')
-    command! -nargs=1 Python python <args>
-elseif has('python3')
-    command! -nargs=1 Python python3 <args>
-else
-    echo "Error: Requires Vim compiled with +python or +python3"
-    finish
-endif
-Python << endp""".splitlines()
+    # Execute with same Python that we are running.
+    python = 'python' if sys.version_info == 2 else 'python3'
+    lines.append(python + ' << endp')
     for arg in func_args:
         lines.append('%s%s = vim.eval("a:%s")' % (prefix, arg, arg))
     lines.append('from vim_bridge.registry import func_register as fr')
