@@ -55,7 +55,7 @@ class TestBridgedDecorator(unittest.TestCase):
     def _strip_whitespace(self, x):
         lines = x.split("\n")
         lines = [line.strip() for line in lines]
-        x = "\n".join(filter(lambda s: s, lines))
+        x = "\n".join([s for s in lines if s])
         return x
 
     def assertCodeEquals(self, x, y):
@@ -69,13 +69,13 @@ class TestBridgedDecorator(unittest.TestCase):
         from vim_bridge.registry import func_register
         import vim
 
-        self.assertFalse(func_register.has_key('foo'))
+        self.assertFalse('foo' in func_register)
         self.assertFalse(vim.command.called)
 
         @bridged
         def foo(x,y): pass
 
-        self.assertTrue(func_register.has_key('foo'))
+        self.assertTrue('foo' in func_register)
         self.assertTrue(vim.command.called)
         self.assertCodeEquals(vim.command.call_args[0][0], \
            """
