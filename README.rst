@@ -2,8 +2,6 @@
  vim_bridge - a Python-to-Vim bridge
 =====================================
 
-.. image:: http://stillmaintained.com/nvie/vim_bridge.png
-
 What is it?
 -----------
 vim_bridge_ is a Python-to-Vim bridge decorator that allows transparent calls
